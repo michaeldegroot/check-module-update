@@ -2,7 +2,7 @@
 [![](https://david-dm.org/michaeldegroot/check-module-update.svg "deps") ](https://david-dm.org/michaeldegroot/check-module-update "david-dm")
 [![](https://travis-ci.org/michaeldegroot/check-module-update.svg?branch=master "testing") ](https://travis-ci.org/michaeldegroot/check-module-update "travis-ci")
 [![](https://coveralls.io/repos/michaeldegroot/check-module-update/badge.svg?branch=master&service=github)](https://coveralls.io/github/michaeldegroot/check-module-update?branch=master)
-![](https://img.shields.io/badge/Node-%3E%3D0.10-green.svg)
+![](https://img.shields.io/badge/Node-%3E%3Dv4.0.0-green.svg)
 ![](https://img.shields.io/npm/dt/check-module-update.svg)
 ![](https://img.shields.io/npm/l/check-module-update.svg)
 
