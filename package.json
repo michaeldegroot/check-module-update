@@ -11,12 +11,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/michaeldegroot/console-debug.git"
+    "url": "git+https://github.com/michaeldegroot/check-module-update.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/michaeldegroot/console-debug/issues"
+    "url": "https://github.com/michaeldegroot/check-module-update/issues"
   },
-  "homepage": "https://github.com/michaeldegroot/console-debug#readme"
+  "homepage": "https://github.com/michaeldegroot/check-module-update#readme"
 }
