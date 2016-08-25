@@ -1,41 +1,49 @@
 'use strict'
 
 const RegClient      = require('npm-registry-client')
-const client         = new RegClient({
-  retry: {
-    count: 0,
-    factor: 0,
-    minTimeout: 150,
-    maxTimeout: 500,
-  },
-})
-
-const programVersion = require('../package.json').version
-const programName    = require('../package.json').name
-const util           = require('./util')
+const path           = require('path')
 const clc            = require('cli-color')
 
-const options = {}
+const modulePath     = path.dirname(require.main.filename)
+const moduleRequire  = require(path.join(modulePath, 'package.json'))
+const programVersion = moduleRequire.version
+const programName    = moduleRequire.name
 
-exports.init = opts => {
-  allowedOpts = [
-    'timeout',
-  ]
-
-  for(i in opts) {
-    console.log(opts[i])
-  }
-
-  options = opts
-  console.log(process.cwd())
+let options = {
+  timeout:    500,
+  output:     true,
+  count:      0,
+  factor:     0,
+  minTimeout: 150,
+  maxTimeout: 500,
 }
 
-exports.check = cb => {
+exports.check = (opts, cb) => {
+  const allowedOpts = []
+  for (let i in options)
+    allowedOpts.push(i)
+
+  for (let i in opts) {
+    let allowedOptsFound = false
+    for (let a in allowedOpts) {
+      if (i == allowedOpts[a])
+        allowedOptsFound = i
+    }
+
+    let errorMsg = 'check-module-update: The option "' + i + '" is not a valid option!\n'
+    errorMsg    += 'Valid options are: ' + allowedOpts.toString().replace(/,/g, ', ') + '\n\n'
+    if (allowedOptsFound === false)
+      throw new Error(errorMsg)
+  }
+
+  options = Object.assign(options, opts)
+  const client = new RegClient(options)
+
   client.get('https://registry.npmjs.org/' + programName, {
     timeout: options.timeout,
   }, (error, data, raw, res) => {
     if (error) {
-      cb()
+      cb(error, null)
       return
     }
 
@@ -48,18 +56,16 @@ exports.check = cb => {
     const latestVersionInt  = parseInt(latestVersion.replace(/\./g, ''))
 
     if (programVersionInt < latestVersionInt) {
-      util.clearScreen()
-      util.console.success('NEW UPDATE!')
       console.log('')
       console.log('There is a new update for symfony-helper, update with: ')
       console.log(clc.bold('npm install symfony-helper -g'))
       console.log('')
       console.log('Your version: ' + clc.bold(programVersion))
       console.log('New version: ' + clc.bold(clc.greenBright(latestVersion)))
-      util.pressAnyKey()
+      cb(null, true)
       return
     }
 
-    cb()
+    cb(null, false)
   })
 }
