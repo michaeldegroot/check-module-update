@@ -1,6 +1,6 @@
 {
   "name": "check-module-update",
-  "version": "0.0.2",
+  "version": "0.0.2b",
   "description": "Makes sure users stay up to date with your module!",
   "main": "index.js",
   "directories": {
