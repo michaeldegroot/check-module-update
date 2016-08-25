@@ -22,5 +22,10 @@
   "dependencies": {
     "cli-color": "^1.1.0",
     "npm-registry-client": "^7.1.2"
+  },
+  "devDependencies": {
+    "assert": "^1.4.1",
+    "assert-plus": "^1.0.0",
+    "mocha": "^3.0.2"
   }
 }

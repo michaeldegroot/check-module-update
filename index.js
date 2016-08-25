@@ -67,12 +67,15 @@ exports.check = (opts, cb) => {
     const latestVersionInt  = parseInt(latestVersion.replace(/\./g, ''))
 
     if (programVersionInt < latestVersionInt) {
-      console.log('')
-      console.log('There is a new update for ' + programName + ', update with: ')
-      console.log(clc.bold('npm install ' + programName + ' ' + preferGlobal))
-      console.log('')
-      console.log('Your version: ' + clc.bold(programVersion))
-      console.log('New version: ' + clc.bold(clc.greenBright(latestVersion)))
+      if (options.output) {
+        console.log('')
+        console.log('There is a new update for ' + programName + ', update with: ')
+        console.log(clc.bold('npm install ' + programName + ' ' + preferGlobal))
+        console.log('')
+        console.log('Your version: ' + clc.bold(programVersion))
+        console.log('New version: ' + clc.bold(clc.greenBright(latestVersion)))
+      }
+
       cb(null, true)
       return
     }
