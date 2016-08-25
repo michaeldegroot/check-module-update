@@ -8,8 +8,8 @@
 
 
 ___
-# More to come
-...
+# Keep users on track
+Programmatically inform users of new updates of your module. This package query's the npm registry on a update check with a defined set of options.
 
 ___
 #  Getting Started
@@ -17,19 +17,24 @@ ___
 ##### 1. Start by installing the package:
     npm install check-module-update
 
-##### 2. Load the code
+##### 2. Do awesome stuff!
 ```js
-  const updateCheck = require('check-module-update')
+updateCheck.check({
+  timeout: 1000,      // Normal timeout in milliseconds of a npm registry request
+  output: true,       // Display output when a new version is availible
+  count: 0,           // Number of retries of a npm registry request
+  factor: 0,          // This does... well.. uhm.. factoring
+  minTimeout: 150,    // Min timeout in milliseconds for a npm registry request
+  maxTimeout: 500,    // Max timeout in milliseconds for a npm registry request
+}, (err, newUpdate) => {
+  if (err)
+    throw new Error(err)
 
-  updateCheck.init({
-    timeout: 1000,
-  })
-```
+  if (newUpdate)
+    console.log('update notification has been displayed to the user!')
 
-##### 3. Do awesome stuff!
-```js
-updateCheck.check(() => {
-  console.log('check done, if there is a update it will be displayed to the user')
+  if (!newUpdate)
+    console.log('No new update available...')
 })
 ```
 

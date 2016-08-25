@@ -4,11 +4,6 @@ const RegClient      = require('npm-registry-client')
 const path           = require('path')
 const clc            = require('cli-color')
 
-const modulePath     = path.dirname(require.main.filename)
-const moduleRequire  = require(path.join(modulePath, 'package.json'))
-const programVersion = moduleRequire.version
-const programName    = moduleRequire.name
-
 let options = {
   timeout:    500,
   output:     true,
@@ -16,6 +11,7 @@ let options = {
   factor:     0,
   minTimeout: 150,
   maxTimeout: 500,
+  path:       path.join(path.dirname(require.main.filename), 'package.json'),
 }
 
 exports.check = (opts, cb) => {
@@ -37,6 +33,21 @@ exports.check = (opts, cb) => {
   }
 
   options = Object.assign(options, opts)
+
+  const modulePath     = options.path
+  const moduleRequire  = require(path.join(modulePath, 'package.json'))
+  const programVersion = moduleRequire.version
+
+  let preferGlobal = moduleRequire.preferGlobal
+
+  if (preferGlobal)
+    preferGlobal = '-g'
+
+  if (!preferGlobal)
+    preferGlobal = ''
+
+  const programName = moduleRequire.name
+
   const client = new RegClient(options)
 
   client.get('https://registry.npmjs.org/' + programName, {
@@ -57,8 +68,8 @@ exports.check = (opts, cb) => {
 
     if (programVersionInt < latestVersionInt) {
       console.log('')
-      console.log('There is a new update for symfony-helper, update with: ')
-      console.log(clc.bold('npm install symfony-helper -g'))
+      console.log('There is a new update for ' + programName + ', update with: ')
+      console.log(clc.bold('npm install ' + programName + ' ' + preferGlobal))
       console.log('')
       console.log('Your version: ' + clc.bold(programVersion))
       console.log('New version: ' + clc.bold(clc.greenBright(latestVersion)))
